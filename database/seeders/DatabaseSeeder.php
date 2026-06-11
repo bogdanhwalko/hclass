@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // ---- Admin ----
         User::updateOrCreate(
             ['email' => 'admin@hclass.test'],
-            ['name' => 'Олена Адмін', 'password' => Hash::make('password'), 'role' => Role::Admin]
+            ['name' => 'Богдан Адмін', 'password' => Hash::make('password'), 'role' => Role::Admin]
         );
 
         // ---- Subjects ----
