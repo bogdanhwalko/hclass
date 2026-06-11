@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: hclass_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - hclass
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: hclass_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - hclass
+
+  mysql:
+    image: mysql:8.0
+    container_name: hclass_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: hclass
+      MYSQL_USER: hclass
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports:
+      - "3307:3306"
+    volumes:
+      - hclass_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootsecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - hclass
+
+networks:
+  hclass:
+    driver: bridge
+
+volumes:
+  hclass_db:
+    driver: local
