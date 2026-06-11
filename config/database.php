@@ -2,11 +2,22 @@
 
 use Illuminate\Support\Str;
 
-// Shared PDO options for the MySQL/MariaDB connections (optional SSL CA).
-$mysqlOptions = function (bool $withSsl = true) {
-    return extension_loaded('pdo_mysql') ? array_filter([
-        PDO::MYSQL_ATTR_SSL_CA => $withSsl ? env('MYSQL_ATTR_SSL_CA') : null,
-    ]) : [];
+// Shared PDO options for the MySQL/MariaDB connections.
+// Some MariaDB hosts mis-map result columns with native prepared statements
+// (a name lands in a datetime cast, pluck('id') returns 0, etc.), so we force
+// client-side prepare emulation by default. Toggle with DB_EMULATE_PREPARES.
+$mysqlOptions = static function (bool $emulatePreparesDefault): array {
+    $options = [];
+
+    if (defined('PDO::MYSQL_ATTR_SSL_CA') && env('MYSQL_ATTR_SSL_CA') !== null) {
+        $options[PDO::MYSQL_ATTR_SSL_CA] = env('MYSQL_ATTR_SSL_CA');
+    }
+
+    if (env('DB_EMULATE_PREPARES', $emulatePreparesDefault)) {
+        $options[PDO::ATTR_EMULATE_PREPARES] = true;
+    }
+
+    return $options;
 };
 
 return [
