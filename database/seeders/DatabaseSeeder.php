@@ -76,12 +76,14 @@ class DatabaseSeeder extends Seeder
             ['Вікторія Гнатюк', 'student4@hclass.test', $class6b],
         ];
 
+        $students = collect();
         foreach ($studentsData as [$name, $email, $class]) {
             $student = User::updateOrCreate(
                 ['email' => $email],
                 ['name' => $name, 'password' => Hash::make('password'), 'role' => Role::Student]
             );
             $class->students()->syncWithoutDetaching([$student->id]);
+            $students->push($student);
         }
 
         // ---- Parent linked to first two students ----
@@ -89,11 +91,12 @@ class DatabaseSeeder extends Seeder
             ['email' => 'parent@hclass.test'],
             ['name' => 'Петро Левчук', 'password' => Hash::make('password'), 'role' => Role::Parent]
         );
-        $childrenIds = User::role(Role::Student)->take(2)->pluck('id');
+        // Use the students we just created (known-good ids) rather than a fresh query.
+        $childrenIds = $students->take(2)->pluck('id')->all();
         $parent->children()->syncWithoutDetaching($childrenIds);
 
         // ---- Demo lesson with an interactive board ----
-        $firstStudent = User::role(Role::Student)->orderBy('id')->first();
+        $firstStudent = $students->first();
         $math = $subjects->firstWhere('code', 'MATH');
 
         $board = Board::updateOrCreate(
