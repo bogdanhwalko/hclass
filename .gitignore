@@ -23,6 +23,7 @@ yarn-error.log
 # Environment and secrets
 .env.*
 !.env.example
+!.env.production.example
 *.key
 *.pem
 
