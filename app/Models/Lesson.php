@@ -16,6 +16,12 @@ class Lesson extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'teacher_id' => 'integer',
+        'student_id' => 'integer',
+        'subject_id' => 'integer',
+        'board_id' => 'integer',
+        'duration_min' => 'integer',
         'scheduled_at' => 'datetime',
     ];
 

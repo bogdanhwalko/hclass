@@ -31,6 +31,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'role' => Role::class,

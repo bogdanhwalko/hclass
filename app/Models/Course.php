@@ -19,6 +19,9 @@ class Course extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'teacher_id' => 'integer',
+        'subject_id' => 'integer',
         'is_published' => 'boolean',
     ];
 

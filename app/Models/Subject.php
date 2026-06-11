@@ -12,6 +12,10 @@ class Subject extends Model
 
     protected $fillable = ['name', 'code', 'description'];
 
+    protected $casts = [
+        'id' => 'integer',
+    ];
+
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(SchoolClass::class, 'class_subject', 'subject_id', 'school_class_id')

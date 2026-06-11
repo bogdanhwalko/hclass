@@ -15,6 +15,9 @@ class BoardWidget extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'board_id' => 'integer',
+        'user_id' => 'integer',
         'data' => 'array',
         'x' => 'float',
         'y' => 'float',

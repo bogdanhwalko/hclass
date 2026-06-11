@@ -13,6 +13,12 @@ class CourseLesson extends Model
 
     protected $fillable = ['course_id', 'title', 'position'];
 
+    protected $casts = [
+        'id' => 'integer',
+        'course_id' => 'integer',
+        'position' => 'integer',
+    ];
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

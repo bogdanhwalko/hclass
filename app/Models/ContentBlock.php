@@ -13,6 +13,9 @@ class ContentBlock extends Model
     protected $fillable = ['course_lesson_id', 'type', 'position', 'data'];
 
     protected $casts = [
+        'id' => 'integer',
+        'course_lesson_id' => 'integer',
+        'position' => 'integer',
         'data' => 'array',
     ];
 

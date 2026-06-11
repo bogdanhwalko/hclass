@@ -13,6 +13,12 @@ class SchoolClass extends Model
 
     protected $fillable = ['name', 'grade_level', 'homeroom_teacher_id'];
 
+    protected $casts = [
+        'id' => 'integer',
+        'grade_level' => 'integer',
+        'homeroom_teacher_id' => 'integer',
+    ];
+
     public function homeroomTeacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'homeroom_teacher_id');

@@ -15,6 +15,9 @@ class BoardStroke extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'board_id' => 'integer',
+        'user_id' => 'integer',
         'points' => 'array',
     ];
 

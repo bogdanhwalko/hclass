@@ -14,6 +14,11 @@ class BoardGroup extends Model
 
     protected $fillable = ['teacher_id', 'name', 'color'];
 
+    protected $casts = [
+        'id' => 'integer',
+        'teacher_id' => 'integer',
+    ];
+
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'teacher_id');

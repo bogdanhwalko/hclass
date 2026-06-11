@@ -18,6 +18,9 @@ class Board extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'teacher_id' => 'integer',
+        'group_id' => 'integer',
         'students_can_draw' => 'boolean',
         'is_open' => 'boolean',
         'cleared_at' => 'datetime',
